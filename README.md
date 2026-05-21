@@ -56,29 +56,70 @@ json
 . 
 ```
 ├── app.py                      # Flask-приложение, все маршруты и логика предсказания
+```
 ```  
 ├── db.py                       # Инициализация базы данных (создание таблиц)
 ```
-├── model.py                    # Скрипт обучения модели и экспорта в pkl  
-├── cleaner.py                  # Скрипт для очистки окружения от лишних библиотек  
-├── extensions.py               # Инициализация SQLAlchemy   
-├── awarded_model_pipeline.pkl  # Предобученная модель   
-├── students.csv                # Исходный датасет студентов  
-├── ds.csv                      # Набор данных для обучения модели  
-├── achievements.csv            # Данные о достижениях  
-├── requirements.txt            # Python-зависимости  
-├── Dockerfile                  # Инструкция сборки Docker-образа  
-├── docker-compose.yml          # Конфигурация Docker Compose  
-├── .dockerignore               # Исключения для Docker  
-├── .gitignore                  # Исключения для Git  
-├── templates/                  # HTML-шаблоны  
-│   ├── index.html  
-│   ├── prediction.html  
-│   └── history.html  
-├── static/                     # Статические файлы (CSS, JavaScript)  
-│   ├── style.css  
-│   └── script.js  
-└── instance/                   # Локальная база данных SQLite (создаётся автоматически)  
+```
+├── model.py                    # Скрипт обучения модели и экспорта в pkl
+```
+```
+├── cleaner.py                  # Скрипт для очистки окружения от лишних библиотек
+```
+```
+├── extensions.py               # Инициализация SQLAlchemy
+```
+```
+├── awarded_model_pipeline.pkl  # Предобученная модель
+```
+```
+├── students.csv                # Исходный датасет студентов
+```
+```
+├── ds.csv                      # Набор данных для обучения модели
+```
+```
+├── achievements.csv            # Данные о достижениях
+```
+```
+├── requirements.txt            # Python-зависимости
+```
+```
+├── Dockerfile                  # Инструкция сборки Docker-образа
+```
+```
+├── docker-compose.yml          # Конфигурация Docker Compose
+```
+```
+├── .dockerignore               # Исключения для Docker
+```
+```
+├── .gitignore                  # Исключения для Git
+```
+```
+├── templates/                  # HTML-шаблоны
+```
+```
+│   ├── index.html
+```
+```
+│   ├── prediction.html
+```
+```
+│   └── history.html
+```
+```
+├── static/                     # Статические файлы (CSS, JavaScript)
+```
+```
+│   ├── style.css
+```
+```
+│   └── script.js
+```
+```
+└── instance/                   # Локальная база данных SQLite (создаётся автоматически)
+```
 
 #Примечания
 
