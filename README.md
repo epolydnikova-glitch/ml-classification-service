@@ -9,12 +9,12 @@
 Для работы требуется Docker.    
 Если Docker ещё не установлен, скачайте и установите [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
-1. Клонируйте репозиторий:
+1. Клонируйте репозиторий:  
    bash    
    git clone https://github.com/epolydnikova-glitch/ml-classification-service.git  
    cd ml-classification-service  
 
-3. Запустите сервис одной командой:
+3. Запустите сервис одной командой:  
    bash    
    docker compose up   
 
@@ -53,9 +53,12 @@ json
 
 #Структура проекта
 
-.  
-├── app.py                      # Flask-приложение, все маршруты и логика предсказания  
-├── db.py                       # Инициализация базы данных (создание таблиц)  
+. 
+```
+├── app.py                      # Flask-приложение, все маршруты и логика предсказания
+```  
+├── db.py                       # Инициализация базы данных (создание таблиц)
+```
 ├── model.py                    # Скрипт обучения модели и экспорта в pkl  
 ├── cleaner.py                  # Скрипт для очистки окружения от лишних библиотек  
 ├── extensions.py               # Инициализация SQLAlchemy   
