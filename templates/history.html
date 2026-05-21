@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История предсказаний — Прогноз-Мастер</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="header__inner">
+                <div class="header__logo">
+                    <span class="header__logo-icon">🔮</span>
+                    <span class="header__logo-text">Прогноз-Мастер</span>
+                </div>
+                <nav class="header__nav">
+                    <a href="{{ url_for('index') }}" class="header__nav-link">Главная</a>
+                    <a href="{{ url_for('prediction') }}" class="header__nav-link">Предсказание</a>
+                    <a href="{{ url_for('history') }}" class="header__nav-link header__nav-link--active">История</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="history-page">
+                <div class="history-page__header">
+                    <h1 class="history-page__title">📋 История предсказаний</h1>
+                    <p class="history-page__subtitle">Все сохранённые расчёты. Вы можете фильтровать, редактировать и удалять записи.</p>
+                </div>
+
+                <div class="history-toolbar">
+                    <div class="history-toolbar__search">
+                        <label for="searchId" class="history-toolbar__label">🔍 Фильтр по ID:</label>
+                        <input type="text" id="searchId" class="history-toolbar__input" placeholder="Введите ID...">
+                        <button type="button" class="btn btn--outline btn--sm" id="clearSearchBtn">Сброс</button>
+                    </div>
+                    <div class="history-toolbar__actions">
+                        <button type="button" class="btn btn--danger btn--sm" id="deleteSelectedBtn" disabled>
+                            🗑 Удалить выбранные
+                        </button>
+                        <span class="history-toolbar__counter" id="recordCount">Записей: {{ records|length }}</span>
+                    </div>
+                </div>
+
+                <div class="history-table-wrapper">
+                    <table class="history-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th class="col-checkbox"><input type="checkbox" id="selectAll" title="Выбрать все"></th>
+                                <th class="col-id">ID</th>
+                                <th class="col-vid">Вид деятельности</th>
+                                <th class="col-dost">Вид достижения</th>
+                                <th class="col-uroven">Уровень мероприятия</th>
+                                <th class="col-result">Результат</th>
+                                <th class="col-date">Дата прогноза</th>
+                                <th class="col-actions">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            {% if records %}
+                                {% for record in records %}
+                                <tr data-id="{{ record.id }}">
+                                    <td class="col-checkbox">
+                                        <input type="checkbox" class="row-checkbox" data-id="{{ record.id }}">
+                                    </td>
+                                    <td class="col-id">{{ record.id }}</td>
+                                    <td class="col-vid">{{ record.vid_deyatelnosti or '—' }}</td>
+                                    <td class="col-dost">{{ record.vid_dostizheniya or '—' }}</td>
+                                    <td class="col-uroven">{{ record.uroven_meropriyatiya or '—' }}</td>
+                                    <td class="col-result">
+                                        <span class="result-badge {% if record.awarded_prediction == 'Да' %}result-badge--high{% else %}result-badge--low{% endif %}">
+                                            {{ record.awarded_probability }}% — {{ record.awarded_prediction }}
+                                        </span>
+                                    </td>
+                                    <td class="col-date">{{ record.created_at.strftime('%d.%m.%Y %H:%M') if record.created_at else '—' }}</td>
+                                    <td class="col-actions">
+                                        <div class="action-btns">
+                                            <button class="btn btn--outline btn--sm detail-btn" data-record='{{ record.to_dict() | tojson | safe }}'>👁</button>
+                                            <a href="{{ url_for('prediction', edit=record.id) }}" class="btn btn--outline btn--sm">✏️</a>
+                                            <form class="delete-form" action="{{ url_for('delete_record', record_id=record.id) }}" method="POST" style="display:inline;">
+                                                <button type="submit" class="btn btn--danger btn--sm">🗑</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="8" class="history-empty">
+                                    <p>📭 История предсказаний пуста.</p>
+                                    <a href="{{ url_for('prediction') }}" class="btn btn--primary">Создать первое предсказание</a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <div class="modal-overlay" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+            <div class="modal modal--wide">
+                <div class="modal__header">
+                    <h2 class="modal__title" id="detailModalTitle">📄 Детали предсказания</h2>
+                </div>
+                <div class="modal__body modal__body--scrollable" id="detailModalBody"></div>
+                <div class="modal__footer">
+                    <button type="button" class="btn btn--outline modal__btn-close" id="detailModalCloseBtn">✕ Закрыть</button>
+                    <button type="button" class="btn btn--primary" id="detailModalEditBtn">✏️ Редактировать</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2026 Прогноз-Мастер. Все права защищены. | <a href="{{ url_for('index') }}">На главную</a></p>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

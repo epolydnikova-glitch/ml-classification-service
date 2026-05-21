@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма предсказания — Прогноз-Мастер</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/light.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="header__inner">
+                <div class="header__logo">
+                    <span class="header__logo-icon">🔮</span>
+                    <span class="header__logo-text">Прогноз-Мастер</span>
+                </div>
+                <nav class="header__nav">
+                    <a href="{{ url_for('index') }}" class="header__nav-link">Главная</a>
+                    <a href="{{ url_for('prediction') }}" class="header__nav-link header__nav-link--active">Предсказание</a>
+                    <a href="{{ url_for('history') }}" class="header__nav-link">История</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="form-page">
+                <div class="form-page__header">
+                    <h1 class="form-page__title">{% if record %}Редактирование предсказания{% else %}Форма параметров для предсказания{% endif %}</h1>
+                    <p class="form-page__subtitle">Заполните известные поля — все данные будут переданы на сервер.</p>
+                </div>
+
+                <form id="awardForm" class="prediction-form" action="{{ url_for('predict') }}" method="POST" novalidate>
+                    {% if record %}
+                    <input type="hidden" name="record_id" value="{{ record.id }}">
+                    {% endif %}
+
+                    <fieldset class="form-section">
+                        <legend class="form-section__legend">📌 Основная информация</legend>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="custom_id">ID предсказания</label>
+                                <input type="text" id="custom_id" name="custom_id"
+                                       placeholder="Например, 100"
+                                       min="1"
+                                       pattern="[1-9][0-9]*"
+                                       title="Только целые положительные числа"
+                                       {% if record %}value="{{ record.id }}" disabled{% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="vid_deyatelnosti">Вид деятельности</label>
+                                <select id="vid_deyatelnosti" name="vid_deyatelnosti">
+                                    <option value="">-- Не выбрано --</option>
+                                    <option value="научно-исследовательская" {% if record and record.vid_deyatelnosti == 'научно-исследовательская' %}selected{% endif %}>научно-исследовательская</option>
+                                    <option value="общественная" {% if record and record.vid_deyatelnosti == 'общественная' %}selected{% endif %}>общественная</option>
+                                    <option value="культурно-творческая" {% if record and record.vid_deyatelnosti == 'культурно-творческая' %}selected{% endif %}>культурно-творческая</option>
+                                    <option value="спортивная" {% if record and record.vid_deyatelnosti == 'спортивная' %}selected{% endif %}>спортивная</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="vid_dostizheniya">Вид достижения</label>
+                                <select id="vid_dostizheniya" name="vid_dostizheniya">
+                                    <option value="">-- Не выбрано --</option>
+                                    <option value="научная статья" {% if record and record.vid_dostizheniya == 'научная статья' %}selected{% endif %}>научная статья</option>
+                                    <option value="благодарность" {% if record and record.vid_dostizheniya == 'благодарность' %}selected{% endif %}>благодарность</option>
+                                    <option value="произведение литературы или искусства" {% if record and record.vid_dostizheniya == 'произведение литературы или искусства' %}selected{% endif %}>произведение литературы или искусства</option>
+                                    <option value="диплом победителя" {% if record and record.vid_dostizheniya == 'диплом победителя' %}selected{% endif %}>диплом победителя</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="uroven_meropriyatiya">Уровень мероприятия</label>
+                                <select id="uroven_meropriyatiya" name="uroven_meropriyatiya">
+                                    <option value="">-- Не выбрано --</option>
+                                    <option value="Университетский" {% if record and record.uroven_meropriyatiya == 'Университетский' %}selected{% endif %}>Университетский</option>
+                                    <option value="Региональный" {% if record and record.uroven_meropriyatiya == 'Региональный' %}selected{% endif %}>Региональный</option>
+                                    <option value="Всероссийский" {% if record and record.uroven_meropriyatiya == 'Всероссийский' %}selected{% endif %}>Всероссийский</option>
+                                    <option value="Международный" {% if record and record.uroven_meropriyatiya == 'Международный' %}selected{% endif %}>Международный</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-section">
+                        <legend class="form-section__legend">🎤 Мероприятие</legend>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="podpisant">Подписант</label>
+                                <input type="text" id="podpisant" name="podpisant" placeholder="ФИО подписанта" value="{{ record.podpisant if record else '' }}">
+                            </div>
+                            <div class="form-group form-group--full">
+                                <label for="ssilki_na_novosti">Ссылка на новость</label>
+                                <input type="url" id="ssilki_na_novosti" name="ssilki_na_novosti" placeholder="https://example.com/news" value="{{ record.ssilki_na_novosti if record else '' }}">
+                            </div>
+                            <div class="form-group form-group--full">
+                                <label for="uroven_uchastiya">Уровень участия</label>
+                                <input type="text" id="uroven_uchastiya" name="uroven_uchastiya" placeholder="Исполнитель, организатор" value="{{ record.uroven_uchastiya if record else '' }}">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-section">
+                        <legend class="form-section__legend">🏅 ГТО</legend>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="nomer_udostovereniya">Номер удостоверения</label>
+                                <input type="text" id="nomer_udostovereniya" name="nomer_udostovereniya" placeholder="Например, АБ123456" value="{{ record.nomer_udostovereniya if record else '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="stupen">Ступень</label>
+                                <input type="text" id="stupen" name="stupen" placeholder="1, 2, 3…" value="{{ record.stupen if record else '' }}">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-section">
+                        <legend class="form-section__legend">📄 Публикация, Авторство, Патент</legend>
+                        <div class="form-grid">
+                            <div class="form-group form-group--full">
+                                <label for="naimenovanie_stati">Наименование работы</label>
+                                <input type="text" id="naimenovanie_stati" name="naimenovanie_stati" placeholder="Имя статьи / произведения" value="{{ record.naimenovanie_stati if record else '' }}">
+                            </div>
+                            <div class="form-group form-group--full">
+                                <label for="autori">Авторы (Соавторы)</label>
+                                <input type="text" id="autori" name="autori" placeholder="ФИО авторов через запятую" value="{{ record.autori if record else '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="nomer_patenta">Номер патента</label>
+                                <input type="text" id="nomer_patenta" name="nomer_patenta" placeholder="Например, 1234567" value="{{ record.nomer_patenta if record else '' }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="data_vidachi">Дата выдачи</label>
+                                <input type="text" id="data_vidachi" name="data_vidachi" placeholder="ДД.ММ.ГГГГ" class="flatpickr" value="{{ record.data_vidachi if record else '' }}">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-section">
+                        <legend class="form-section__legend">📈 Наукометрические показатели и вклад</legend>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="google_scholar">Google Scholar</label>
+                                <select id="google_scholar" name="google_scholar">
+                                    <option value="">-- Не выбрано --</option>
+                                    <option value="нет" {% if record and record.google_scholar == 0 %}selected{% endif %}>Нет</option>
+                                    <option value="да" {% if record and record.google_scholar == 1 %}selected{% endif %}>Да</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="scopus">Scopus</label>
+                                <select id="scopus" name="scopus">
+                                    <option value="">-- Не выбрано --</option>
+                                    <option value="нет" {% if record and record.scopus == 0 %}selected{% endif %}>Нет</option>
+                                    <option value="да" {% if record and record.scopus == 1 %}selected{% endif %}>Да</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="web_of_science">Web of Science</label>
+                                <select id="web_of_science" name="web_of_science">
+                                    <option value="">-- Не выбрано --</option>
+                                    <option value="нет" {% if record and record.web_of_science == 0 %}selected{% endif %}>Нет</option>
+                                    <option value="да" {% if record and record.web_of_science == 1 %}selected{% endif %}>Да</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="rinc">РИНЦ</label>
+                                <select id="rinc" name="rinc">
+                                    <option value="">-- Не выбрано --</option>
+                                    <option value="нет" {% if record and record.rinc == 0 %}selected{% endif %}>Нет</option>
+                                    <option value="да" {% if record and record.rinc == 1 %}selected{% endif %}>Да</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="vak">ВАК</label>
+                                <select id="vak" name="vak">
+                                    <option value="">-- Не выбрано --</option>
+                                    <option value="нет" {% if record and record.vak == 0 %}selected{% endif %}>Нет</option>
+                                    <option value="да" {% if record and record.vak == 1 %}selected{% endif %}>Да</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="vklad">Вклад %</label>
+                                <input type="text" id="vklad" name="vklad" placeholder="Например: 25.0" value="{{ '' if not record or record.vklad is none else record.vklad }}">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn--danger btn--lg" id="clearBtn">🗑️ Очистить форму</button>
+                        <button type="submit" class="btn btn--primary btn--lg" id="submitBtn">✨ Получить предсказание</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <div class="modal-overlay" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal">
+                <div class="modal__header">
+                    <h2 class="modal__title" id="modalTitle">🔮 Результат предсказания</h2>
+                    <button type="button" class="modal__close-icon" id="modalCloseBtn" aria-label="Закрыть">&times;</button>
+                </div>
+                <div class="modal__body" id="modalBody"></div>
+                <div class="modal__footer" id="modalFooter">
+                    <a href="{{ url_for('index') }}" class="btn btn--primary modal__btn-home" id="modalHomeBtn">🏠 На главную</a>
+                    <a href="{{ url_for('prediction') }}" class="btn btn--secondary modal__btn-new" id="modalNewBtn">🆕 Новое</a>
+                    <a href="{{ url_for('history') }}" class="btn btn--secondary modal__btn-history" id="modalHistoryBtn">📋 История</a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2026 Прогноз-Мастер. Все права защищены. | <a href="{{ url_for('index') }}">На главную</a></p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+    <script>
+        flatpickr("#data_vidachi", {
+            locale: "ru",
+            dateFormat: "d.m.Y",
+            allowInput: true
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

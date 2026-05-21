@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз-Мастер — Главная</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <div class="header__inner">
+                <div class="header__logo">
+                    <span class="header__logo-icon">🔮</span>
+                    <span class="header__logo-text">Прогноз-Мастер</span>
+                </div>
+                <nav class="header__nav">
+                    <a href="{{ url_for('index') }}" class="header__nav-link header__nav-link--active">Главная</a>
+                    <a href="{{ url_for('prediction') }}" class="header__nav-link">Предсказание</a>
+                    <a href="{{ url_for('history') }}" class="header__nav-link">История</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main">
+            <section class="hero">
+                <div class="hero__content">
+                    <h1 class="hero__title">Сервис интеллектуальных предсказаний</h1>
+                    <p class="hero__subtitle">Оцените вероятность получения стипендии на основе научных и внеучебных достижений.</p>
+                    <div class="hero__cards">
+                        <a href="{{ url_for('prediction') }}" class="hero-card hero-card--primary">
+                            <span class="hero-card__icon">✨</span>
+                            <h2 class="hero-card__title">Получить предсказание</h2>
+                            <p class="hero-card__desc">Заполните форму и узнайте свои шансы</p>
+                            <span class="hero-card__action">Перейти →</span>
+                        </a>
+                        <a href="{{ url_for('history') }}" class="hero-card hero-card--secondary">
+                            <span class="hero-card__icon">📋</span>
+                            <h2 class="hero-card__title">История предсказаний</h2>
+                            <p class="hero-card__desc">Просмотр, фильтрация и удаление сохранённых расчётов</p>
+                            <span class="hero-card__action">Перейти →</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="info-section">
+                <div class="info-block">
+                    <h3>📊 Учитываемые параметры</h3>
+                    <p>Сервис использует 19 различных показателей, включая индексы цитирования, данные о публикациях, патентах, мероприятиях и соавторах.</p>
+                </div>
+                <div class="info-block">
+                    <h3>💾 Сохранение истории</h3>
+                    <p>Все ваши предсказания сохраняются в базе данных. Вы можете в любой момент вернуться к ним, отредактировать параметры или удалить.</p>
+                </div>
+                <div class="info-block">
+                    <h3>🔄 Пересчёт прогнозов</h3>
+                    <p>Измените любые параметры в истории и мгновенно получите обновлённый прогноз.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Прогноз-Мастер. Все права защищены. | <a href="{{ url_for('index') }}">На главную</a></p>
+        </footer>
+    </div>
+</body>
+</html>
