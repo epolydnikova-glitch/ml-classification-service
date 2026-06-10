@@ -27,24 +27,21 @@
             <div class="form-page">
                 <div class="form-page__header">
                     <h1 class="form-page__title">{% if record %}Редактирование предсказания{% else %}Форма параметров для предсказания{% endif %}</h1>
-                    <p class="form-page__subtitle">Заполните известные поля — все данные будут переданы на сервер.</p>
+                    <p class="form-page__subtitle">Заполните известные поля - все данные будут переданы на сервер.</p>
                 </div>
 
                 <form id="awardForm" class="prediction-form" action="{{ url_for('predict') }}" method="POST" novalidate>
                     {% if record %}
                     <input type="hidden" name="record_id" value="{{ record.id }}">
                     {% endif %}
-
                     <fieldset class="form-section">
                         <legend class="form-section__legend">📌 Основная информация</legend>
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="custom_id">ID предсказания</label>
                                 <input type="text" id="custom_id" name="custom_id"
-                                       placeholder="Например, 100"
-                                       min="1"
-                                       pattern="[1-9][0-9]*"
-                                       title="Только целые положительные числа"
+                                       placeholder="Например, 100" min="1"
+                                       pattern="[1-9][0-9]*" title="Только целые положительные числа"
                                        {% if record %}value="{{ record.id }}" disabled{% endif %}>
                             </div>
                             <div class="form-group">
@@ -79,7 +76,6 @@
                             </div>
                         </div>
                     </fieldset>
-
                     <fieldset class="form-section">
                         <legend class="form-section__legend">🎤 Мероприятие</legend>
                         <div class="form-grid">
@@ -87,17 +83,16 @@
                                 <label for="podpisant">Подписант</label>
                                 <input type="text" id="podpisant" name="podpisant" placeholder="ФИО подписанта" value="{{ record.podpisant if record else '' }}">
                             </div>
-                            <div class="form-group form-group--full">
+                            <div class="form-group">
                                 <label for="ssilki_na_novosti">Ссылка на новость</label>
                                 <input type="url" id="ssilki_na_novosti" name="ssilki_na_novosti" placeholder="https://example.com/news" value="{{ record.ssilki_na_novosti if record else '' }}">
                             </div>
-                            <div class="form-group form-group--full">
+                            <div class="form-group">
                                 <label for="uroven_uchastiya">Уровень участия</label>
                                 <input type="text" id="uroven_uchastiya" name="uroven_uchastiya" placeholder="Исполнитель, организатор" value="{{ record.uroven_uchastiya if record else '' }}">
                             </div>
                         </div>
                     </fieldset>
-
                     <fieldset class="form-section">
                         <legend class="form-section__legend">🏅 ГТО</legend>
                         <div class="form-grid">
@@ -111,15 +106,14 @@
                             </div>
                         </div>
                     </fieldset>
-
                     <fieldset class="form-section">
                         <legend class="form-section__legend">📄 Публикация, Авторство, Патент</legend>
                         <div class="form-grid">
-                            <div class="form-group form-group--full">
+                            <div class="form-group">
                                 <label for="naimenovanie_stati">Наименование работы</label>
                                 <input type="text" id="naimenovanie_stati" name="naimenovanie_stati" placeholder="Имя статьи / произведения" value="{{ record.naimenovanie_stati if record else '' }}">
                             </div>
-                            <div class="form-group form-group--full">
+                            <div class="form-group">
                                 <label for="autori">Авторы (Соавторы)</label>
                                 <input type="text" id="autori" name="autori" placeholder="ФИО авторов через запятую" value="{{ record.autori if record else '' }}">
                             </div>
@@ -133,7 +127,6 @@
                             </div>
                         </div>
                     </fieldset>
-
                     <fieldset class="form-section">
                         <legend class="form-section__legend">📈 Наукометрические показатели и вклад</legend>
                         <div class="form-grid">
@@ -191,7 +184,6 @@
                 </form>
             </div>
         </main>
-
         <div class="modal-overlay" id="resultModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <div class="modal">
                 <div class="modal__header">
@@ -200,9 +192,9 @@
                 </div>
                 <div class="modal__body" id="modalBody"></div>
                 <div class="modal__footer" id="modalFooter">
-                    <a href="{{ url_for('index') }}" class="btn btn--primary modal__btn-home" id="modalHomeBtn">🏠 На главную</a>
-                    <a href="{{ url_for('prediction') }}" class="btn btn--secondary modal__btn-new" id="modalNewBtn">🆕 Новое</a>
-                    <a href="{{ url_for('history') }}" class="btn btn--secondary modal__btn-history" id="modalHistoryBtn">📋 История</a>
+                    <a href="{{ url_for('index') }}" class="btn btn--primary modal__btn-home">🏠 На главную</a>
+                    <a href="{{ url_for('prediction') }}" class="btn btn--secondary modal__btn-new">🆕 Новое</a>
+                    <a href="{{ url_for('history') }}" class="btn btn--secondary modal__btn-history">📋 История</a>
                 </div>
             </div>
         </div>
