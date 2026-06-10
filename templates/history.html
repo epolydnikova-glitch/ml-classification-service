@@ -64,17 +64,19 @@
                                     <td class="col-checkbox">
                                         <input type="checkbox" class="row-checkbox" data-id="{{ record.id }}">
                                     </td>
-                                    <td class="col-id">{{ record.id }}</td>
-                                    <td class="col-vid">{{ record.vid_deyatelnosti or '—' }}</td>
-                                    <td class="col-dost">{{ record.vid_dostizheniya or '—' }}</td>
-                                    <td class="col-uroven">{{ record.uroven_meropriyatiya or '—' }}</td>
-                                    <td class="col-result">
+                                    <td class="col-id" data-label="ID">{{ record.id }}</td>
+                                    <td class="col-vid" data-label="Вид деятельности">{{ record.vid_deyatelnosti or '—' }}</td>
+                                    <td class="col-dost" data-label="Вид достижения">{{ record.vid_dostizheniya or '—' }}</td>
+                                    <td class="col-uroven" data-label="Уровень мероприятия">{{ record.uroven_meropriyatiya or '—' }}</td>
+                                    <td class="col-result" data-label="Результат">
                                         <span class="result-badge {% if record.awarded_prediction == 'Да' %}result-badge--high{% else %}result-badge--low{% endif %}">
                                             {{ record.awarded_probability }}% — {{ record.awarded_prediction }}
                                         </span>
                                     </td>
-                                    <td class="col-date">{{ record.created_at.strftime('%d.%m.%Y %H:%M') if record.created_at else '—' }}</td>
-                                    <td class="col-actions">
+                                    <td class="col-date" data-label="Дата прогноза">
+                                        {{ record.created_at.strftime('%d.%m.%Y %H:%M') if record.created_at else '—' }}
+                                    </td>
+                                    <td class="col-actions" data-label="Действия">
                                         <div class="action-btns">
                                             <button class="btn btn--outline btn--sm detail-btn" data-record='{{ record.to_dict() | tojson | safe }}'>👁</button>
                                             <a href="{{ url_for('prediction', edit=record.id) }}" class="btn btn--outline btn--sm">✏️</a>
